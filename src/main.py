@@ -1,31 +1,26 @@
-import requests
+from bus import get_bus_arrivals
+from trains import get_elizabeth_line_trains
+from routing import can_catch_train
 
-lat = 51.48074
-lon = -0.43309
+buses = get_bus_arrivals()
+trains = get_elizabeth_line_trains()
 
-# Bus Stop ID 
-stop_id = "490007811B"
+print("\nBuses from Harlington Corner:")
 
-# Get nearby bus stops using the TFL API
-# url = f"https://api.tfl.gov.uk/StopPoint?lat={lat}&lon={lon}&stopTypes=NaptanPublicBusCoachTram&radius=300"
+for bus in buses:
+    print(f"Line {bus['line']} to {bus['destination']}")
+    print(f"Arrives at {bus['arrival_time']} ({bus['minutes']} mins)\n")
 
-# TFL API to get bus stop information by stop ID
-url = f"https://api.tfl.gov.uk/StopPoint/{stop_id}/Arrivals"
+print("\nElizabeth Line trains from Hayes & Harlington Station:")
 
-response = requests.get(url)
-data = response.json()
+for train in trains:
+    print(f"Line {train['line']} to {train['destination']}")
+    print(f"Arrives at {train['arrival_time']} ({train['minutes']} mins)\n")
 
-# sort bus arrivals by expected arrival time
-data = sorted(data, key=lambda x: x["expectedArrival"])
+bus_time = buses[0]['minutes']  # Time until the next bus arrives
+train_time = trains[0]['minutes']  # Time until the next train arrives
 
-print(f"Bus arrivals at stop {stop_id}:\n")
-
-for bus in data[:5]:
-    line = bus["lineName"]
-    destination = bus["destinationName"]
-    time = bus["timeToStation"] // 60  # convert seconds to minutes
-
-    print(f"Line {line} to {destination} arriving in {time} minutes")
-
-# for stop in data["stopPoints"]:
-#     print(stop["commonName"], stop["id"])
+if can_catch_train(bus_time, train_time):
+    print("You can catch the train!")
+else:
+    print("You will miss the train.")

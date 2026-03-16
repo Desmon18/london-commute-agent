@@ -1,0 +1,12 @@
+BUS_STOP_ID = "490007811B" # Harlinton Corner towrads Hayes & Har;ington Station
+HAYES_HARLINGTON_STATION_ID = "910GHAYESAH" # Hayes & Harlington Station ID in TFL API
+
+# minutes
+WALK_TO_BUS = 5 
+BUS_TO_STATION = 10
+ELIZABETH_TRAVEL = 22
+CHANGE_TIME_FARRINGDON = 5
+THAMESLINK_WAIT_THRESHOLD = 3
+
+FARRINGDON_TO_KX = 5 # Farringdon to King's Cross St Pancras
+WALK_TO_WORK = 12
